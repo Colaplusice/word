@@ -9,5 +9,6 @@ from django.urls import path
 from word_list import views
 
 urlpatterns = [
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path('list_words/<int:list_id>', views.list_words, name='list_words'),
 ]
