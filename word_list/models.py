@@ -6,10 +6,17 @@ from django.db import models
 class WordList(models.Model):
     name = models.CharField(verbose_name='单词组名', max_length=255)
 
+    @property
+    def all_word(self):
+        return self.word_set.all()
+
     def __str__(self):
         return self.name
 
 
 class Word(models.Model):
-    list = models.ManyToManyField(WordList, verbose_name='列表名')
+    list = models.ManyToManyField(WordList, verbose_name='列表名', default='')
     content = models.CharField(max_length=32, unique=True)
+
+    def __str__(self):
+        return self.content

@@ -1,22 +1,35 @@
 {% extends 'base.html' %}
+{% load trancate_middle %}
+{% block head %}
+
+    <style>
+     table  td,table tr{
+         border: black 1px solid !important;
+
+     }
+    </style>
+
+{% endblock %}
 
 {% block body %}
-
-    <h2 align='center'>{{ list_words.name }}</h2>
+    <h2 align='center' class="mb-4 mt-2">{{ list_words.name }}</h2>
     <div class="container">
         <div class="row">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-condensed">
                 <tr class="row mx-0">
                     {% for word in list_words.word_set.all %}
-                        <td class="col-1">{{ word.id }}</td>
+                        <td class="col-1">{{ forloop.counter }}</td>
+{#                        <td class="col-1">{{ list_words.name |truncatechars_middle:5 }}</td>#}
                         <td class="col-2">{{ word.content }}</td>
                         <td class="col-3"></td>
                     {% endfor %}
                 </tr>
+                <tr class="row mx-0">
+                    <td class="col-6" >听写日期：__________ 学生姓名：__________</td>
+                    <td class="col-6"> 共听写 _____个，错 _____个，正确率 _____%</td>
+                </tr>
             </table>
         </div>
     </div>
-
-
 {% endblock %}
 
