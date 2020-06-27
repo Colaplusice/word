@@ -1,12 +1,29 @@
 {% extends 'base.html' %}
 {% block body %}
-
-    <ul>
-        {% for list in all_list %}
-            <li><a href="{% url 'list_words' list.id  %}">  {{ list.name }}
-            </a></li>
-        {% endfor %}
-
-    </ul>
-
+    <h2 align="center">我的单词表</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <ul class="list-unstyled list-group">
+                    {% for list in all_list %}
+                        <li class="list-group-item-text">
+                            <h2>                 {{ list.name }}</h2>
+                            <a href="{% url 'list_words' list.id %}">英译汉</a>
+                            <a href="{% url 'list_words' list.id %}?type=2">汉译英</a>
+                            <a href="{% url 'list_words' list.id %}?type=3">汉英对照表</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-3">
+                <div class="card" style="color: white">
+                    <div class="card-body bg-info">
+                        点击打印的类型，进入打印页面，mac使用command+p
+                        windows使用ctrl+p
+                        打印页面保存至pdf打印或者直接打印即可
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

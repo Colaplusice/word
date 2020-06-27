@@ -2,9 +2,10 @@
 
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import ManyToOneRel, ForeignKey, OneToOneField, ManyToManyRel
 
-from word_list.models import WordList, Word
+from word_list.models import WordList, Word, UserWord
 
 
 class ListAdminMixin(object):
@@ -16,18 +17,29 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
-# class Admin(admin.ModelAdmin):
-#     pass
-class WordAdmin(admin.ModelAdmin):
-    autocomplete_fields = ('list',)
+# class MyAdmin(admin.ModelAdmin):
+#     list_display = [field.name for field in Word._meta.get_fields()]
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(WordAdmin, self).get_form(request, obj, **kwargs)
-        log = LogEntry.objects.filter(content_type__model='word').order_by('-action_time').first()
-        word = log.get_edited_object()
-        list = word.list.first()
-        form.base_fields['list'].initial = list
-        return form
+
+class Admin(ListAdminMixin, admin.ModelAdmin):
+    pass
+
+
+class WordAdmin(Admin):
+    search_fields = ('content', 'translate',)
+
+    # 自动补全列表为上一次的
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(WordAdmin, self).get_form(request, obj, **kwargs)
+    #     log = LogEntry.objects.filter(content_type__model='word').order_by('-action_time').first()
+    #     try:
+    #         word = log.get_edited_object()
+    #         list = word.list.first()
+    #         form.base_fields['list'].initial = list
+    #     except ObjectDoesNotExist:
+    #         pass
+    #     return form
+
     # prepopulated_fields = {'list': ('list',)}
     # def save_model(self, request, obj, form, change):
     #     obj.list = WordList.objects.first()
@@ -39,8 +51,10 @@ class WordAdmin(admin.ModelAdmin):
     #     formset.save()
 
 
-class ListAdmin(admin.ModelAdmin):
-    search_fields = ('name',)
+class UserWordAdmin(Admin):
+    # list_display = ('word', 'list',)
+    autocomplete_fields = ('list', 'word',)
+
     # ordering = ['date_created']
 
     # print session
@@ -51,17 +65,35 @@ class ListAdmin(admin.ModelAdmin):
     # list_display = ['session_key', '_session_data', 'expire_date']
     # readonly_fields = ['_session_data']
     # exclude = ['session_data']
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UserWordAdmin, self).get_form(request, obj, **kwargs)
+        log = LogEntry.objects.filter(content_type__model='userword').order_by('-action_time').first()
+        try:
+            user_word = log.get_edited_object()
+            form.base_fields['list'].initial = user_word.list
+        except ObjectDoesNotExist:
+            pass
+        return form
 
-    # date_hierarchy = 'expire_date'
-    #
-    # def formfield_for_manytomany(self, db_field, request, **kwargs):
-    #
-    #     # 找出最近操作的单词
-    #     log = LogEntry.objects.all().order_by('-action_time').first()
-    #     word = log.get_edited_object()
-    #     list = word.list.all()
-    #     kwargs['queryset'] = list
-    #     super().formfield_for_manytomany(db_field, request, **kwargs)
+# class UserWordInline(admin.TabularInline):
+#     model = UserWord
+
+
+class UserWordListAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+
+    # inlines = [UserWordInline]
+    def all_words(self, obj):
+        return '/'.join([str(word) for word in obj.userword_set.all()])
+
+    list_display = [field.name for field in WordList._meta.fields] + ['all_words']
+
+    # list_display = [field.name for field in WordList._meta.get_fields()]
+
+    def get_queryset(self, request):
+        qs = super(UserWordListAdmin, self).get_queryset(request)
+        return qs.filter(user=request.user)
+
 
 
 # models = apps.get_models()
@@ -77,4 +109,5 @@ class ListAdmin(admin.ModelAdmin):
 #         pass
 
 admin.site.register(Word, WordAdmin)
-admin.site.register(WordList, ListAdmin)
+admin.site.register(WordList, UserWordListAdmin)
+admin.site.register(UserWord, UserWordAdmin)
