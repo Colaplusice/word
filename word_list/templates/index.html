@@ -1,21 +1,67 @@
 {% extends 'base.html' %}
 {% block body %}
-    <h2 align="center">我的单词表</h2>
-    <div class="container">
+    <h2 align="center" class="mt-4">我的单词表</h2>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-9">
+            <div class="col-9 offset-1 bg-warning">
                 <ul class="list-unstyled list-group">
-                    {% for list in all_list %}
-                        <li class="list-group-item-text">
-                            <h2>                 {{ list.name }}</h2>
-                            <a href="{% url 'list_words' list.id %}">英译汉</a>
-                            <a href="{% url 'list_words' list.id %}?type=2">汉译英</a>
-                            <a href="{% url 'list_words' list.id %}?type=3">汉英对照表</a>
-                        </li>
-                    {% endfor %}
+                    <div class="row">
+                        {#                    所有单词 #}
+                        <div class="col-md-4">
+                            <li class="list-group-item-text">
+                                <div class="card m-2">
+                                    <div class="card-body">
+                                        <img class="card-img-top" src="https://www.dute.org/placeholder/300x300?text=所有单词&bgcolor=777&fontsize=30" alt="Card image cap">
+                                        <div class="card-title">
+                                            <h5>所有单词(乱序)</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <a class="btn btn-success btn-block" href="{% url 'list_words' %}?type=1">英译汉</a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a class="btn btn-info btn-block" href="{% url 'list_words' %}?type=2">英译汉</a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <a class="btn btn-danger btn-block" href="{% url 'list_words' %}?type=3">英汉对照表</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                        {% for list in all_list %}
+                            <div class="col-md-4">
+                                <li class="list-group-item-text">
+                                    <div class="card m-2">
+                                        <div class="card-body">
+                                            <img class="card-img-top" src="https://www.dute.org/placeholder/300x300?text={{ list.name }}&bgcolor=777&fontsize=30" alt="Card image cap">
+                                            <div class="card-title">
+                                                <h5>  {{ list.name }}</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a class="btn btn-success btn-block" href="{% url 'list_words' list.id %}?type=1">英译汉</a>
+
+                                                </div>
+                                                <div class="col-6">
+                                                    <a class="btn btn-info btn-block" href="{% url 'list_words' list.id %}?type=2">英译汉</a>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <a class="btn btn-danger btn-block" href="{% url 'list_words' list.id %}?type=3">英汉对照表</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </li>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </ul>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <div class="card" style="color: white">
                     <div class="card-body bg-info">
                         点击打印的类型，进入打印页面，mac使用command+p

@@ -75,6 +75,7 @@ class UserWordAdmin(Admin):
             pass
         return form
 
+
 # class UserWordInline(admin.TabularInline):
 #     model = UserWord
 
@@ -94,6 +95,10 @@ class UserWordListAdmin(admin.ModelAdmin):
         qs = super(UserWordListAdmin, self).get_queryset(request)
         return qs.filter(user=request.user)
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UserWordListAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['user'].initial = request.user
+        return form
 
 
 # models = apps.get_models()

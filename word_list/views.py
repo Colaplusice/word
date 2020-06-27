@@ -7,19 +7,26 @@ from word_list.models import WordList, UserWord
 def user_login():
     pass
 
+
 def index(request):
-    all_list = WordList.objects.all()
+    all_list = WordList.objects.order_by('-created')
     return render(request, 'index.html', {'all_list': all_list})
 
 
-def list_words(request, list_id):
+def list_words(request, list_id=None):
+    # 所有单词
+    word_list = []
+    title = '所有单词'
+    if list_id is None:
+        lists = WordList.objects.all()
+        for li in lists:
+            word_list.extend(li.userword_set.all())
+    else:
+        li = WordList.objects.get(id=list_id)
+        word_list.extend(li.userword_set.all())
+        title = li.name
     print_type = request.GET.get('type', '1')
-    print(print_type)
-    list_words = WordList.objects.get(id=list_id)
-    allword=list_words.userword_set.all()
-    # for w in allword:
-        # print(w.word.content)
-    return render(request, 'list_words.html', {'list_words': list_words, 'type': print_type})
+    return render(request, 'list_words.html', {'list_words': word_list, 'title': title, 'type': print_type})
 
 
 def read_txt(filename):

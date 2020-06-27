@@ -17,9 +17,9 @@
         {#        </div>#}
         <div class="row">
             <table class="table table-bordered table-condensed">
-                <h2 class="mb-4 mt-2">{{ list_words.name }}</h2>
+                <h2 class="mb-4 mt-2">{{ title }}</h2>
                 <tr class="row mx-0">
-                    {% for user_word in list_words.userword_set.all %}
+                    {% for user_word in list_words %}
                         <td class="col-1">{{ forloop.counter }}</td>
                         {#                        <td class="col-1">{{ list_words.name |truncatechars_middle:5 }}</td>#}
                         {% if type == '1' %}
@@ -34,10 +34,12 @@
                         {% endif %}
                     {% endfor %}
                 </tr>
+            {% if type != '3' %}
                 <tr class="row mx-0">
                     <td class="col-6">听写日期：__________ 学生姓名：__________</td>
                     <td class="col-6"> 共听写 _____个，错 _____个，正确率 _____%</td>
                 </tr>
+            {% endif %}
             </table>
         </div>
     </div>
