@@ -24,7 +24,7 @@ SECRET_KEY = '6i*iihobl4hfgh(of#m6^1auy+^v*9uq)k30n-+%pqsb)_+79z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.5', 'word.colaplusice.com']
 
 # Application definition
 
@@ -67,7 +67,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'word.wsgi.application'
 # cache
@@ -114,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'Asia/shanghai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

@@ -10,11 +10,6 @@
 {% endblock %}
 {% block body %}
     <div class="container">
-        {#        <div class="row mt-4">#}
-        {#            <div class="col-md-3">#}
-        {#                <button id="print" class="btn btn-primary btn-block">打印</button>#}
-        {#            </div>#}
-        {#        </div>#}
         <div class="row">
             <table class="table table-bordered table-condensed">
                 <h2 class="mb-4 mt-2">{{ title }}</h2>
@@ -26,11 +21,11 @@
                             <td class="col-2">{{ user_word.word.content }}</td>
                             <td class="col-3"></td>
                         {% elif type == '2' %}
-                            <td class="col-3">{{ user_word.word.translate | slice:15 }}...</td>
+                            <td class="col-3">{{ user_word.word.translate }}</td>
                             <td class="col-2"></td>
                         {% elif type == '3' %}
                             <td class="col-2">{{ user_word.word.content }}</td>
-                            <td class="col-3">{{ user_word.word.translate | slice:15 }}...</td>
+                            <td class="col-3">{{ user_word.word.translate}}</td>
                         {% endif %}
                     {% endfor %}
                 </tr>

@@ -61,7 +61,7 @@ def get_translate(content):
             translation = text['data']['cn_definition']['defn']
             return translation
         except:
-            return '单词不正确或者手动更新释义！'
+            return '无'
 
 
 class Word(TimeStampedModel):
@@ -72,11 +72,8 @@ class Word(TimeStampedModel):
         return self.content
 
     def save(self, *args, **kwargs):
-        # 第一次添加单词时会更新释义
-        if self._state.adding is True:
-            # if not self.translate or self.translate == '释义会自动更新，无需填写':
+        if self.translate == self.translate:
             self.translate = get_translate(self.content)
-            print('新增加单词!')
         super(Word, self).save(*args, **kwargs)
 
     class Meta:
