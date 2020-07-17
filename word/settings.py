@@ -24,7 +24,7 @@ SECRET_KEY = '6i*iihobl4hfgh(of#m6^1auy+^v*9uq)k30n-+%pqsb)_+79z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.5', 'word.colaplusice.com']
+ALLOWED_HOSTS = ['192.168.1.5', 'word.colaplusice.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
