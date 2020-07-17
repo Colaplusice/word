@@ -132,6 +132,7 @@ ENV_PROFILE = os.getenv("ENV")
 # cdn url # collect static后，文件会在这里 方便在远程部署同步文件到nginx
 if ENV_PROFILE == 'production':
     # cdn地址
+    print('this is env', ENV_PROFILE)
     STATIC_URL = "http://cdn.colaplusice.com/movie/static/"
     # nginx配置的文件目录
     STATIC_ROOT = "/www/movie/static"
