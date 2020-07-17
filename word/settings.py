@@ -70,15 +70,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'word.wsgi.application'
 # cache
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -127,6 +127,7 @@ SIMPLEUI_HOME_INFO = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT="/static/"
 # 线上设置
 ENV_PROFILE = os.getenv("ENV")
 # cdn url # collect static后，文件会在这里 方便在远程部署同步文件到nginx
@@ -135,4 +136,4 @@ if ENV_PROFILE == 'production':
     print('this is env', ENV_PROFILE)
     STATIC_URL = "http://cdn.colaplusice.com/movie/static/"
     # nginx配置的文件目录
-    STATIC_ROOT = "/www/movie/static"
+    STATIC_ROOT = "/www/word/static"
