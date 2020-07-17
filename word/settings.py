@@ -24,7 +24,7 @@ SECRET_KEY = '6i*iihobl4hfgh(of#m6^1auy+^v*9uq)k30n-+%pqsb)_+79z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.5', 'word.colaplusice.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['192.168.1.5', '115.29.191.175', 'word.colaplusice.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -127,3 +127,11 @@ SIMPLEUI_HOME_INFO = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# 线上设置
+ENV_PROFILE = os.getenv("ENV")
+# cdn url # collect static后，文件会在这里 方便在远程部署同步文件到nginx
+if ENV_PROFILE == 'production':
+    # cdn地址
+    STATIC_URL = "http://cdn.colaplusice.com/movie/static/"
+    # nginx配置的文件目录
+    STATIC_ROOT = "/www/movie/static"
