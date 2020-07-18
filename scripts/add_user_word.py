@@ -17,11 +17,11 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'word.settings')
 
 django.setup()
 
-from word_list.models import Word, get_translate,User,UserWord
+from word_list.models import Word
 
 words = Word.objects.filter(translate='翻译')
 
 for word in words:
     # UserWord.objects.get_or_create(word_id=word.id,list_id=)
-    word.translate = get_translate(word.content)
+    # word.translate = get_translate(word.content)
     word.save()
