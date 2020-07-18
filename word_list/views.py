@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, reverse, redirect
 
 from word_list.models import WordList, UserWord
@@ -40,6 +41,23 @@ def upload_words(request):
     # file=request.POST.fi
     return redirect(reverse('list_words'))
     pass
+
+
+def export_list(request, list_id):
+    word_list = WordList.objects.get(id=list_id)
+    # content = ''
+    file_name = '{}.txt'.format(word_list.name)
+    # with open(file_name, 'w')as opener:
+    content = '\n'.join([word.word.content for word in word_list.list_words])
+    print(content)
+    #     for word in word_list.list_words:
+    #         opener.write(word.word.content + '\n')
+    response = HttpResponse(content, content_type='application/text charset=utf-8')
+    response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
+
+    # res = FileResponse(io.StringIO(content).read(), filename=file_name, as_attachment=True)
+    # res['Content-Type'] = 'application/octet-stream'
+    return response
 
 
 def get_translate():

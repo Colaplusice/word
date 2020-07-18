@@ -20,11 +20,16 @@
                                                 <a class="btn btn-success btn-block" href="{% url 'list_words' %}?type=1">英译汉</a>
                                             </div>
                                             <div class="col-6">
-                                                <a class="btn btn-info btn-block" href="{% url 'list_words' %}?type=2">英译汉</a>
+                                                <a class="btn btn-info btn-block" href="{% url 'list_words' %}?type=2">汉译英</a>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
-                                            <a class="btn btn-danger btn-block" href="{% url 'list_words' %}?type=3">英汉对照表</a>
+                                            <div class="col-md-6">
+                                                <a class="btn btn-danger btn-block" href="{% url 'list_words' %}?type=3">英汉对照表</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a class="btn btn-danger btn-block" href="#?type=3">导出</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -45,12 +50,17 @@
 
                                                 </div>
                                                 <div class="col-6">
-                                                    <a class="btn btn-info btn-block" href="{% url 'list_words' list.id %}?type=2">英译汉</a>
+                                                    <a class="btn btn-info btn-block" href="{% url 'list_words' list.id %}?type=2">汉译英</a>
                                                 </div>
                                             </div>
-                                            <div class="row mt-2">
-                                                <a class="btn btn-danger btn-block" href="{% url 'list_words' list.id %}?type=3">英汉对照表</a>
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <a class="btn btn-danger btn-block" href="{% url 'list_words' %}?type=3">英汉对照表</a>
                                             </div>
+                                            <div class="col-md-6">
+                                                <a class="btn btn-danger btn-block" href="{% url 'export_list' list.id %}?type=3">导出</a>
+                                            </div>
+                                        </div>
                                         </div>
 
                                     </div>
