@@ -16,9 +16,8 @@ from utils import request_translate
 
 words = Word.objects.all()
 for word in words:
-    print(word.data, type(word.data))
-    # continue
     if word.data == {}:
+        print('requesting word:'.format(word.content))
         data = request_translate(word.content)
         if data['msg'] == 'SUCCESS':
             word.data = data
