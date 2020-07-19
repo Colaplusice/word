@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -74,7 +75,13 @@ class JSONField(models.TextField):
             return value
         if value is None:
             return value
-        return self.to_dict(value)
+        try:
+            return self.to_dict(value)
+        except JSONDecodeError as e:
+            if isinstance(value, str):
+                return eval(value)
+            else:
+                raise e
 
     def get_prep_value(self, value):
         """ convert python dictionary to string before writing to db """
@@ -98,13 +105,20 @@ class JSONField(models.TextField):
 class Word(TimeStampedModel):
     content = models.CharField(max_length=32, unique=True, verbose_name='内容')
     translate = models.CharField(max_length=255, verbose_name='翻译', default='释义会自动更新，无需填写')
-    data = JSONField(verbose_name='所有数据', default={})
+    data = JSONField(verbose_name='所有数据', default='{"data":"自动生成无需填写"}', null=True)
 
     @property
     def us_sound_mark(self):
+        if isinstance(self.data,str):
+            return 'none'
+        if self.data.get('msg') != 'SUCCESS':
+            return 'none'
         try:
-            return self.data['data']['pronunciations']['us']
-        except KeyError:
+            us_sound_mark = self.data['data']['pronunciations']['us']
+            uk_sound_mark = self.data['data']['pronunciations']['uk']
+            return us_sound_mark or uk_sound_mark or 'none'
+        except Exception as e:
+            print(e)
             return 'none'
 
     def __str__(self):

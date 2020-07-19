@@ -4,10 +4,8 @@
 @contact: fjl2401@163.com vx:18340071291
 """
 import json
-import pprint
 
 import requests
-
 
 
 def request_translate(content):

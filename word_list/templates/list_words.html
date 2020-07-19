@@ -17,13 +17,13 @@
                     {% for user_word in list_words %}
                         <td class="col-1">{{ forloop.counter }}</td>
                         {% if type == '1' %}
-                            <td class="col-2">{{ user_word.word.content }}<p>/{{ user_word.word.us_sound_mark }}/</p></td>
+                            <td class="col-2">{{ user_word.word.content }}<p> {% if user_word.word.us_sound_mark != 'none' %} /{{ user_word.word.us_sound_mark }}/ {% endif %}</p></td>
                             <td class="col-3"></td>
                         {% elif type == '2' %}
                             <td class="col-3">{{ user_word.word.translate }}</td>
                             <td class="col-2"></td>
                         {% elif type == '3' %}
-                            <td class="col-2">{{ user_word.word.content }}<p>/{{ user_word.word.us_sound_mark }}/</p></td>
+                            <td class="col-2">{{ user_word.word.content }}<p> {% if user_word.word.us_sound_mark != 'none' %} /{{ user_word.word.us_sound_mark }}/ {% endif %} </p></td>
                             <td class="col-3">{{ user_word.word.translate}}</td>
                         {% endif %}
                     {% endfor %}

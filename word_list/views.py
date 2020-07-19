@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, reverse, redirect
 
-from word_list.models import WordList, UserWord
+from word_list.forms import UploadFileForm
+from word_list.models import WordList, UserWord, User, Word
 
 
 # Create your views here.
@@ -11,7 +12,7 @@ def user_login():
 
 def index(request):
     all_list = WordList.objects.order_by('-created')
-    return render(request, 'index.html', {'all_list': all_list})
+    return render(request, 'index.html', {'all_list': all_list, 'form': UploadFileForm})
 
 
 def list_words(request, list_id=None):
@@ -30,17 +31,31 @@ def list_words(request, list_id=None):
     return render(request, 'list_words.html', {'list_words': word_list, 'title': title, 'type': print_type})
 
 
-def read_txt(filename):
-    userowrd = UserWord.objects.first()
-    # userowrd.list
-    # with
-    pass
+
+def handle_uploaded_file(username, f):
+    print('this is f')
+    file_name = str(f)[:-4]
+    print(file_name)
+    all_word = f.read().decode('utf8')
+    all_word = all_word.split('\r\n')
+    user = User.objects.get(username=username)
+    word_list, _ = WordList.objects.get_or_create(user=user, name=file_name)
+    for word in all_word:
+        word = word.strip()
+        # 检查单词合法性
+        if word == '':
+            continue
+        word, _ = Word.objects.get_or_create(content=word)
+        # 用户单词
+        UserWord.objects.get_or_create(word=word, list=word_list)
 
 
-def upload_words(request):
-    # file=request.POST.fi
-    return redirect(reverse('list_words'))
-    pass
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(form.data['username'], request.FILES['file'])
+    return redirect(reverse('index'))
 
 
 def export_list(request, list_id):
