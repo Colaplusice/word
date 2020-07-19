@@ -17,6 +17,6 @@ def request_translate(content):
     try:
         text = json.loads(res.text)
     except JSONDecodeError as e:
-        print('word:', content)
+        print('word:', content, res.text)
         raise e
     return text
